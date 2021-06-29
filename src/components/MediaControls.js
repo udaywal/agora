@@ -18,7 +18,7 @@ function MediaControls(props) {
     const handleVideo = () => { 
         setVideo(!video)
         props.video(!video)
-     }
+    }
 
     const handleDisconnect = () => { props.disconnect() }
 
@@ -72,4 +72,4 @@ function MediaControls(props) {
     )
 }
 
-export default MediaControls
+export default MediaControls;

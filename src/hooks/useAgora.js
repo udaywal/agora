@@ -1,109 +1,101 @@
-// import { useState, useEffect } from 'react';
-// import AgoraRTC from 'agora-rtc-sdk-ng';
+import { useState, useEffect } from 'react';
+import AgoraRTC from 'agora-rtc-sdk-ng';
 
-// export default function useAgora(client) {
+// const rtc = {
+//     client: null,
+//     localAudioTrack: null,
+//     localVideoTrack: null,
+// };
 
-//     const [localVideoTrack, setLocalVideoTrack] = useState < ILocalVideoTrack | undefined > (undefined);
-//     const [localAudioTrack, setLocalAudioTrack] = useState < ILocalAudioTrack | undefined > (undefined);
+const options = {
+    appId: "be8aca7927fa42b99ab959738c24e60f",
+    appSecret: "2788948a5d5a4944a4d52424ec7cc408",
+    channel: "agora",
+    token: "006be8aca7927fa42b99ab959738c24e60fIABjXqZlrp1Oqnizl93J+8XkxCAENRhLa1g0rBLpYnJpz/2gtqAAAAAAEAAm+nFWH4ncYAEAAQAdidxg",
+};
 
-//     const [joinState, setJoinState] = useState(false);
+const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp9" });
 
-//     const [remoteUsers, setRemoteUsers] = useState < IAgoraRTCRemoteUser[] > ([]);
+export default function useAgora() {
 
-//     async function createLocalTracks(audioConfig?: MicrophoneAudioTrackInitConfig, videoConfig?: CameraVideoTrackInitConfig)
-//         : Promise<[IMicrophoneAudioTrack, ICameraVideoTrack]> {
-//         const [microphoneTrack, cameraTrack] = await AgoraRTC.createMicrophoneAndCameraTracks(audioConfig, videoConfig);
-//         setLocalAudioTrack(microphoneTrack);
-//         setLocalVideoTrack(cameraTrack);
-//         return [microphoneTrack, cameraTrack];
-//     }
+    const [localAudioTrack, setLocalAudioTrack] = useState(undefined);
+    const [localVideoTrack, setLocalVideoTrack] = useState(undefined);
 
-//     const joinChannel = async () => {
-//         const uid = await rtc.client.join(options.appId, options.channel, options.token, null);
-//         console.log("🤵🏻 uid", uid);
+    const [joinState, setJoinState] = useState(false);
+    const [remoteUsers, setRemoteUsers] = useState([]);
 
-//         rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-//         rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+    const joinChannel = async () => {
+        const [microphoneTrack, cameraTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
+        setLocalAudioTrack(microphoneTrack);
+        setLocalVideoTrack(cameraTrack);
 
-//         rtc.localVideoTrack.play("local-stream")
+        const uid = await client.join(options.appId, options.channel, options.token, null);
+        console.log("🤵🏻 uid", uid);
 
-//         const published = await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
-//         console.log("🚀 user published success!", published, rtc);
-//     }
+        await client.publish([microphoneTrack, cameraTrack]);
+        console.log("🚀 user published success!");
+        setJoinState(true);
+    }
 
-//     async function leave() {
-//         if (localAudioTrack) {
-//             localAudioTrack.stop();
-//             localAudioTrack.close();
-//         }
-//         if (localVideoTrack) {
-//             localVideoTrack.stop();
-//             localVideoTrack.close();
-//         }
-//         setRemoteUsers([]);
-//         setJoinState(false);
-//         await client?.leave();
-//     }
+    async function leaveChannel() {
+        if (localAudioTrack) {
+            localAudioTrack.stop();
+            localAudioTrack.close();
+        }
+        if (localVideoTrack) {
+            localVideoTrack.stop();
+            localVideoTrack.close();
+        }
+        setRemoteUsers([]);
+        setJoinState(false);
+        await client?.leave();
+    }
+ 
+    useEffect(() => {
+        if (!client) return;
+        setRemoteUsers(client.remoteUsers);
 
-//     useEffect(() => {
-//         if (!client) return;
-//         setRemoteUsers(client.remoteUsers);
-
-//         const handleUserPublished = async (user, mediaType) => {
-//             console.log("🙋🏻‍♀️ AgoraRTCRemoteUser", user)
+        const handleUserPublished = async (user, mediaType) => {
+            console.log("🙋🏻‍♀️ AgoraRTCRemoteUser", user)
     
-//             // Subscribe to a remote user.
-//             await rtc.client.subscribe(user, mediaType);
-//             console.log("subscribe success");
-          
-//             // If the subscribed track is video.
-//             if (mediaType === "video") {
-//               // Get `RemoteVideoTrack` in the `user` object.
-//               const remoteVideoTrack = user.videoTrack;
-//               // Pass the DIV container and the SDK dynamically creates a player in the container for playing the remote video track.
-//               remoteVideoTrack.play("remote-stream");
-//             }
-          
-//             // If the subscribed track is audio.
-//             if (mediaType === "audio") {
-//               // Get `RemoteAudioTrack` in the `user` object.
-//               const remoteAudioTrack = user.audioTrack;
-//               // Play the audio track. No need to pass any DOM element.
-//               remoteAudioTrack.play();
-//             }
-//         }
+            // Subscribe to a remote user.
+            await client.subscribe(user, mediaType);
+            console.log("Remote users subscribe success.");
 
-//         const handleUserUnpublished = (user) => {
-//             setRemoteUsers(remoteUsers => Array.from(client.remoteUsers));
-//         }
+            setRemoteUsers(Array.from(client.remoteUsers));
+        }
 
-//         const handleUserJoined = (user) => {
-//             setRemoteUsers(remoteUsers => Array.from(client.remoteUsers));
-//         }
+        const handleUserUnpublished = (user) => {
+            setRemoteUsers(Array.from(client.remoteUsers));
+        }
 
-//         const handleUserLeft = (user) => {
-//             setRemoteUsers(remoteUsers => Array.from(client.remoteUsers));
-//         }
+        const handleUserJoined = (user) => {
+            setRemoteUsers(Array.from(client.remoteUsers));
+        }
 
-//         client.on('user-published', handleUserPublished);
-//         client.on('user-unpublished', handleUserUnpublished);
-//         client.on('user-joined', handleUserJoined);
-//         client.on('user-left', handleUserLeft);
+        const handleUserLeft = (user) => {
+            setRemoteUsers(Array.from(client.remoteUsers));
+        }
 
-//         return () => {
-//             client.off('user-published', handleUserPublished);
-//             client.off('user-unpublished', handleUserUnpublished);
-//             client.off('user-joined', handleUserJoined);
-//             client.off('user-left', handleUserLeft);
-//         };
-//     }, [client]);
+        client.on('user-published', handleUserPublished);
+        client.on('user-unpublished', handleUserUnpublished);
+        client.on('user-joined', handleUserJoined);
+        client.on('user-left', handleUserLeft);
 
-//     return {
-//         localAudioTrack,
-//         localVideoTrack,
-//         joinState,
-//         leave,
-//         join,
-//         remoteUsers,
-//     };
-// }
+        return () => {
+            client.off('user-published', handleUserPublished);
+            client.off('user-unpublished', handleUserUnpublished);
+            client.off('user-joined', handleUserJoined);
+            client.off('user-left', handleUserLeft);
+        };
+    }, [client]);
+
+    return {
+        localAudioTrack,
+        localVideoTrack,
+        joinState,
+        remoteUsers,
+        joinChannel,
+        leaveChannel
+    };
+}

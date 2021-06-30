@@ -9,10 +9,17 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import MediaPlayer from './MediaPlayer';
 import MediaControls from './MediaControls';
 
+import API from '../services/api';
+
+import { actionTypes } from '../contexts/reducer';
+import { useStateValue } from '../contexts/StateProvider';
+
 function Call() {
 
-    const { localAudioTrack, localVideoTrack, joinState, remoteUsers, joinChannel, leaveChannel } = useAgora();
+    const { localAudioTrack, localVideoTrack, joinState, remoteUsers, joinChannel, leaveChannel } = useAgora("agora", "ad");
     const [ playing, setPlaying ] = useState(true);
+
+    const [{ call }, dispatch] = useStateValue();
 
     const handleAudio = (data) => {
         // console.log("🎵 ", data, rtc.localAudioTrack)
@@ -27,6 +34,34 @@ function Call() {
         // console.log("🎵 ", rtc.localVideoTrack.isPlaying)
         localVideoTrack.setEnabled(data);
         setPlaying(data);
+    }
+
+    const handleCallConnect = async () => {
+        try {
+            if (call && call.channel) {
+                console.log("incoming call 📲📞")
+                joinChannel( call.channel, call.token )
+            } else {
+                const apiResponse = await API._outgoingCall({ callerId: 1, calleeId: 2 });
+                if (apiResponse && apiResponse.success) {
+                    console.log("outgoing call 📤📞", apiResponse.data)
+                    joinChannel( apiResponse.data.channel, apiResponse.data.token )
+                }
+            }
+        } catch (error) {
+            console.log("Some error", error)
+        }
+    }
+
+    const handleCallDisconnect = async () => {
+        console.log(call)
+        leaveChannel();
+        dispatch({
+            type: actionTypes.RESET_STATE,
+            call: null,
+            user: null
+        })
+        console.log(call)
     }
 
     return (
@@ -44,7 +79,7 @@ function Call() {
                         <button className="icon"> 
                             <CallIcon className="bg-transparent" /> 
                         </button>
-                        <button className="icon" onClick={joinChannel}> 
+                        <button className="icon" onClick={handleCallConnect}> 
                             <VideocamIcon className="bg-transparent" /> 
                         </button>
                     </div>
@@ -59,7 +94,7 @@ function Call() {
                             </div>
                         ))
                     }
-                    <MediaControls audio={handleAudio} video={handleVideo} disconnect={leaveChannel} />
+                    <MediaControls audio={handleAudio} video={handleVideo} disconnect={handleCallDisconnect} />
                 </>
             }
         </div>

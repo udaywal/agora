@@ -1,15 +1,23 @@
 import React, { useState } from 'react'
-import Call from './Call'
-import Chat from './Chat'
+
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
+
+import HomeScreen from '../screens/HomeScreen';
+import IncomingScreen from '../screens/IncomingScreen';
 
 import { getDeviceToken, onMessageListener } from '../utils/firebase'
 
 function App() {
 
+    /* Handle user authentication and user&counselor data */
+    
+
     const [isTokenFound, setTokenFound] = useState(false);
     const [deviceToken, setDeviceToken] = useState("");
     const [notification, setNotification] = useState({title: '', body: ''});
     
+    /* Notifications */
+
     getDeviceToken(setTokenFound, setDeviceToken);
 
     onMessageListener().then(payload => {
@@ -19,15 +27,18 @@ function App() {
         alert(`${notification.title} & ${notification.body}`)
     }).catch(err => console.log('failed: ', err));
 
-    
+    /* Setting the users state */
 
     return (
         <div className="bg-gray-100 overflow-auto">
             <div className="h-screen max-w-screen-lg mx-auto">
-                <div className="flex-row space-y-6 md:flex md:space-y-0 space-x-6 my-6">
-                    <Call />
-                    <Chat />
-                </div>
+            <BrowserRouter>
+                <Switch>
+                    <Route exact path="/" component={HomeScreen} />
+                    <Route path="/incoming/:userId/:channel/:token" component={IncomingScreen} />
+                    <Route path="*" render={()=> <Redirect to="/" />} />
+                </Switch>
+            </BrowserRouter>
             </div>
         </div>
     )

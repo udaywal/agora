@@ -1,18 +1,20 @@
 import { useState, useEffect } from 'react';
 import AgoraRTC from 'agora-rtc-sdk-ng';
 
+import { appId } from '../utils/constant'
+
 // const rtc = {
 //     client: null,
 //     localAudioTrack: null,
 //     localVideoTrack: null,
 // };
 
-const options = {
-    appId: "be8aca7927fa42b99ab959738c24e60f",
-    appSecret: "2788948a5d5a4944a4d52424ec7cc408",
-    channel: "agora",
-    token: "006be8aca7927fa42b99ab959738c24e60fIABjXqZlrp1Oqnizl93J+8XkxCAENRhLa1g0rBLpYnJpz/2gtqAAAAAAEAAm+nFWH4ncYAEAAQAdidxg",
-};
+// const options = {
+//     appId: "be8aca7927fa42b99ab959738c24e60f",
+//     appSecret: "2788948a5d5a4944a4d52424ec7cc408",
+//     channel: "agora",
+//     token: "006be8aca7927fa42b99ab959738c24e60fIABjXqZlrp1Oqnizl93J+8XkxCAENRhLa1g0rBLpYnJpz/2gtqAAAAAAEAAm+nFWH4ncYAEAAQAdidxg",
+// };
 
 const client = AgoraRTC.createClient({ mode: "rtc", codec: "vp9" });
 
@@ -24,12 +26,15 @@ export default function useAgora() {
     const [joinState, setJoinState] = useState(false);
     const [remoteUsers, setRemoteUsers] = useState([]);
 
-    const joinChannel = async () => {
+    const joinChannel = async (channel, token) => {
+
+        console.log("🚀", appId, channel, token)
+
         const [microphoneTrack, cameraTrack] = await AgoraRTC.createMicrophoneAndCameraTracks();
         setLocalAudioTrack(microphoneTrack);
         setLocalVideoTrack(cameraTrack);
 
-        const uid = await client.join(options.appId, options.channel, options.token, null);
+        const uid = await client.join(appId, channel, token, null);
         console.log("🤵🏻 uid", uid);
 
         await client.publish([microphoneTrack, cameraTrack]);

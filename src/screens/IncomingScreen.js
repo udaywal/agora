@@ -40,6 +40,7 @@ function IncomingScreen() {
     }
 
     // useEffect(() => {
+    //   /* TODO - Validate the call whether it's correct or not  */ 
     //     if (channel) {
     //         dispatch({
     //             type: actionTypes.SET_CALL,

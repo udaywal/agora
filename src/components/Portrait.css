@@ -1,0 +1,21 @@
+.circle1 {
+    height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    left:25px; 
+    top:25px;
+    animation: scaling 2s linear infinite;
+}
+
+@keyframes scaling {
+    0% {
+      transform: scale(1);
+      background-color: rgba(245, 0, 182);
+    }
+    100% {
+      transform: scale(2);
+      background-color: rgba(245, 0, 182, 0);
+    }
+  }

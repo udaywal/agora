@@ -2,12 +2,13 @@ import React, { useState } from 'react'
 
 import useAgora from '../hooks/useAgora';
 
-import { Avatar } from '@material-ui/core';
+// import { Avatar } from '@material-ui/core';
 import CallIcon from '@material-ui/icons/Call';
 import VideocamIcon from '@material-ui/icons/Videocam';
 
 import MediaPlayer from './MediaPlayer';
 import MediaControls from './MediaControls';
+import Portrait from './Portrait';
 
 import API from '../services/api';
 
@@ -54,14 +55,11 @@ function Call() {
     }
 
     const handleCallDisconnect = async () => {
-        console.log(call)
-        leaveChannel();
         dispatch({
-            type: actionTypes.RESET_STATE,
-            call: null,
-            user: null
+            type: actionTypes.SET_CALL,
+            call: null
         })
-        console.log(call)
+        leaveChannel();
     }
 
     return (
@@ -70,11 +68,15 @@ function Call() {
                 !joinState
                 ?
                 <>
-                    <Avatar 
+                    {/* <Avatar 
                         src="https://c.stocksy.com/a/rIb100/z9/381725.jpg"
                         className="mt-14 shadow-lg" style={{ width:"150px",  height:"150px" }} />
                     <h4 className="text-lg mt-4">Suzzane Maloney</h4>
-                    <p className="text-base text-gray-600">counselor</p>
+                    <p className="text-base text-gray-600">counselor</p> */}
+                    <Portrait 
+                        src="https://c.stocksy.com/a/rIb100/z9/381725.jpg"  
+                        name="Suzzane Maloney" role="counselor" status="connecting..."
+                    />
                     <div className="flex mt-5 mb-14">
                         <button className="icon"> 
                             <CallIcon className="bg-transparent" /> 

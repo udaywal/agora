@@ -2,7 +2,7 @@
     height: 100px;
     width: 100px;
     border-radius: 50%;
-    background-color: red;
+    background-color: white;
     position: absolute;
     left:25px; 
     top:25px;
@@ -12,10 +12,10 @@
 @keyframes scaling {
     0% {
       transform: scale(1);
-      background-color: rgba(245, 0, 182);
+      background-color: #13a360;
     }
     100% {
       transform: scale(2);
-      background-color: rgba(245, 0, 182, 0);
+      background-color: rgba(19, 163, 96, 0);
     }
   }

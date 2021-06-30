@@ -9,6 +9,7 @@ import VideocamIcon from '@material-ui/icons/Videocam';
 import MediaPlayer from './MediaPlayer';
 import MediaControls from './MediaControls';
 import Portrait from './Portrait';
+import IconButton from './IconButton';
 
 import API from '../services/api';
 
@@ -17,7 +18,7 @@ import { useStateValue } from '../contexts/StateProvider';
 
 function Call() {
 
-    const { localAudioTrack, localVideoTrack, joinState, remoteUsers, joinChannel, leaveChannel } = useAgora("agora", "ad");
+    const { localAudioTrack, localVideoTrack, joinState, remoteUsers, joinChannel, leaveChannel } = useAgora();
     const [ playing, setPlaying ] = useState(true);
 
     const [{ call }, dispatch] = useStateValue();
@@ -78,12 +79,15 @@ function Call() {
                         name="Suzzane Maloney" role="counselor" status="connecting..."
                     />
                     <div className="flex mt-5 mb-14">
-                        <button className="icon"> 
-                            <CallIcon className="bg-transparent" /> 
-                        </button>
-                        <button className="icon" onClick={handleCallConnect}> 
+                        <IconButton icon={<CallIcon />} />
+                        <IconButton icon={<VideocamIcon />} action={handleCallConnect} />
+                        {/* TODO */}
+                        {/* <button className="icon"> 
+                            <i className="bg-transparent"><CallIcon /> </i>
+                        </button> */}
+                        {/* <button className="icon" onClick={handleCallConnect}> 
                             <VideocamIcon className="bg-transparent" /> 
-                        </button>
+                        </button> */}
                     </div>
                 </>
                 :

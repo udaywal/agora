@@ -4,12 +4,18 @@ import './Portrait.css'
 import { Avatar } from '@material-ui/core';
 
 function Portrait(props) {
+    // props.type = default/incoming/audioonly
     return (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center"
+            style={
+                props.type === 'audioonly' ? { position: 'absolute', left: '34%', top: '23%' } : null
+            }
+        >
             <div style={{ position: 'relative'}}>
-                <div className="circle1"></div>
+                {props.type === 'calling' && <div className="circle1"></div>}
                 <Avatar src={props.src}
-                    className="shadow-lg" style={{ width:"150px",  height:"150px" }} 
+                    className="shadow-lg" 
+                    style={{ width:"150px", height:"150px" }} 
                 />
             </div>
             <h4 className="text-lg mt-4">{props.name}</h4>

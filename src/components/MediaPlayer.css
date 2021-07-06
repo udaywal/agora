@@ -1,0 +1,34 @@
+.player {
+    width: 600px;
+    height: 450px;
+}
+.player_screen {
+    margin-top: 2%;
+}
+
+@media screen and (max-width: 768px) {
+    .player {
+        width: 400px;
+        height: 250px;
+    }
+}
+
+@media screen and (min-width: 768px) and (max-width: 900px) {
+    .player {
+        width: 400px;
+        height: 300px;
+    }
+    .player_screen {
+        margin-top: 10%;
+    }
+}
+
+@media screen and (min-width: 900px) and (max-width: 1200px) {
+    .player {
+        width: 450px;
+        height: 380px;
+    }
+    .player_screen {
+        margin-top: 5%;
+    }
+}

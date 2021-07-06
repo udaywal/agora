@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom'
 
-import HomeScreen from '../screens/HomeScreen';
+import DashboardScreen from '../screens/DashboardScreen';
 import IncomingScreen from '../screens/IncomingScreen';
 
 import { getDeviceToken, onMessageListener } from '../utils/firebase'
@@ -31,10 +31,11 @@ function App() {
 
     return (
         <div className="bg-gray-100 overflow-auto">
-            <div className="h-screen max-w-screen-lg mx-auto">
+            {/* <div className="h-screen max-w-screen-lg mx-auto"> */}
+            <div className="h-screen mx-auto">
             <BrowserRouter>
                 <Switch>
-                    <Route exact path="/" component={HomeScreen} />
+                    <Route exact path="/" component={DashboardScreen} />
                     <Route path="/incoming/:userId/:channel/:token" component={IncomingScreen} />
                     <Route path="*" render={()=> <Redirect to="/" />} />
                 </Switch>

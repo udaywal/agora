@@ -53,7 +53,7 @@ function IncomingScreen() {
         <div className="grid h-screen place-content-center" style={{ background: '#102f4b' }}>
             <Portrait 
                 src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" 
-                status="Incoming Audio Call"
+                status="Incoming Audio Call" type="calling"
             />
             <div className="flex justify-center pt-16">
                 <IconButton 

@@ -69,11 +69,6 @@ function Call() {
                 !joinState
                 ?
                 <>
-                    {/* <Avatar 
-                        src="https://c.stocksy.com/a/rIb100/z9/381725.jpg"
-                        className="mt-14 shadow-lg" style={{ width:"150px",  height:"150px" }} />
-                    <h4 className="text-lg mt-4">Suzzane Maloney</h4>
-                    <p className="text-base text-gray-600">counselor</p> */}
                     <Portrait 
                         src="https://c.stocksy.com/a/rIb100/z9/381725.jpg"  
                         name="Suzzane Maloney" role="counselor" status="connecting..."
@@ -81,13 +76,6 @@ function Call() {
                     <div className="flex mt-5 mb-14">
                         <IconButton icon={<CallIcon />} />
                         <IconButton icon={<VideocamIcon />} action={handleCallConnect} />
-                        {/* TODO */}
-                        {/* <button className="icon"> 
-                            <i className="bg-transparent"><CallIcon /> </i>
-                        </button> */}
-                        {/* <button className="icon" onClick={handleCallConnect}> 
-                            <VideocamIcon className="bg-transparent" /> 
-                        </button> */}
                     </div>
                 </>
                 :

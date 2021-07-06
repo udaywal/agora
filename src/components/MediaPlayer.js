@@ -1,6 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 
+import './MediaPlayer.css';
+
 import { Avatar } from '@material-ui/core';
+
+import Portrait from './Portrait'
 
 function MediaPlayer({ audioTrack, videoTrack, playing = true, mine = false }) {
 
@@ -32,12 +36,16 @@ function MediaPlayer({ audioTrack, videoTrack, playing = true, mine = false }) {
             {
                 playing
                 ?
-                <div ref={videoContainerRef} style={{ width: "650px", height: "420px", borderRadius: '15px', overflow: 'hidden' }} ></div>
+                <div ref={videoContainerRef} className="player" style={{ overflow: 'hidden' }} ></div>
                 :
-                <div style={{ width: "650px", height: "420px", borderRadius: '15px', overflow: 'hidden', background: '#102f4b', position: 'relative' }} >
-                    <Avatar 
+                <div className="player" style={{ overflow: 'hidden', background: '#143b5e', position: 'relative' }} >
+                    {/* <Avatar 
                         src="https://c.stocksy.com/a/rIb100/z9/381725.jpg" className="mt-14 shadow-lg" 
-                        style={{ width:"150px",  height:"150px", position: 'absolute', left: 250, top: 60 }} />
+                        style={{ width:"150px",  height:"150px", position: 'absolute', left: 250, top: 60 }} /> */}
+                    <Portrait 
+                        src="https://images.pexels.com/photos/1680172/pexels-photo-1680172.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" 
+                        type="audioonly"
+                    />
                 </div>
             }    
         </>

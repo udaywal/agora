@@ -22,9 +22,8 @@ function MediaControls(props) {
 
     const handleDisconnect = () => { props.disconnect() }
 
-    return (
-        <div className="flex justify-center mt-6">
-            
+    return ( 
+        <div className="flex justify-center space-x-2">
             {
                 audio
                 ?
@@ -32,14 +31,14 @@ function MediaControls(props) {
                     <button className="icon" onClick={handleAudio}> 
                         <MicIcon className="bg-transparent" /> 
                     </button>
-                    <h5 className="text-xs">Mic</h5>
+                    <h5 className="text-xs text-gray-300">Mic</h5>
                 </div>
                 :
                 <div className="iconbox">
                     <button className="icon" onClick={handleAudio}> 
                         <MicOffIcon className="bg-transparent text-red-500" /> 
                     </button>
-                    <h5 className="text-xs">Mic</h5>
+                    <h5 className="text-xs text-gray-300">Mic</h5>
                 </div>
             }
             
@@ -50,14 +49,14 @@ function MediaControls(props) {
                     <button className="icon" onClick={handleVideo}> 
                         <VideocamIcon className="bg-transparent" /> 
                     </button>
-                    <h5 className="text-xs">Cam</h5>
+                    <h5 className="text-xs text-gray-300">Cam</h5>
                 </div>
                 :
                 <div className="iconbox">
                     <button className="icon" onClick={handleVideo}> 
                         <VideocamOffIcon className="bg-transparent text-red-500" /> 
                     </button>
-                    <h5 className="text-xs">Cam</h5>
+                    <h5 className="text-xs text-gray-300">Cam</h5>
                 </div>
             }
             
@@ -65,9 +64,8 @@ function MediaControls(props) {
                 <button className="icon" onClick={handleDisconnect}> 
                     <CallEndIcon className="bg-transparent text-red-500" /> 
                 </button>
-                <h5 className="text-xs">Disconnect</h5>
+                <h5 className="text-xs text-gray-300">Disconnect</h5>
             </div>
-
         </div>
     )
 }
